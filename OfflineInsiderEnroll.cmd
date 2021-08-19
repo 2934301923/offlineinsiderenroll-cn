@@ -5,7 +5,7 @@ for /f "tokens=6 delims=[]. " %%i in ('ver') do set build=%%i
 
 if %build% LSS 17763 (
     echo =============================================================
-    echo This script is compatible only with Windows 10 RS5 and later.
+    echo 此脚本仅与Windows 10 RS5及更高版本兼容。
     echo =============================================================
     echo.
     pause
@@ -16,7 +16,7 @@ REG QUERY HKU\S-1-5-19\Environment >NUL 2>&1
 IF %ERRORLEVEL% EQU 0 goto :START_SCRIPT
 
 echo =====================================================
-echo This script needs to be executed as an administrator.
+echo 请用管理员身份运行此脚本！
 echo =====================================================
 echo.
 pause
@@ -31,16 +31,16 @@ IF %ERRORLEVEL% EQU 0 set "FlightSigningEnabled=1"
 :CHOICE_MENU
 cls
 set "choice="
-echo OfflineInsiderEnroll v%scriptver%
+echo OfflineInsiderEnroll simplified Chinese v%scriptver%
 echo.
-echo 1 - Enroll to Dev Channel
-echo 2 - Enroll to Beta Channel
-echo 3 - Enroll to Release Preview Channel
+echo 1 - 进入开发者更新通道
+echo 2 - 进入Beta更新通道
+echo 3 - 进入Preview更新通道 
 echo.
-echo 4 - Stop receiving Insider Preview builds
-echo 5 - Quit without making any changes
+echo 4 - 停止接收
+echo 5 - 直接退出
 echo.
-set /p choice="Choice: "
+set /p choice="请选择您的选项："
 echo.
 if /I "%choice%"=="1" goto :ENROLL_DEV
 if /I "%choice%"=="2" goto :ENROLL_BETA
@@ -107,11 +107,11 @@ reg add "HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\WindowsSelfHost\UI\Visibility" /t
 goto :EOF
 
 :ENROLL
-echo Applying changes...
+echo 保存中，请稍候！
 call :RESET_INSIDER_CONFIG 1>NUL 2>NUL
 call :ADD_INSIDER_CONFIG 1>NUL 2>NUL
 bcdedit /set {current} flightsigning yes >NUL 2>&1
-echo Done.
+echo 完成了！
 
 echo.
 IF %FlightSigningEnabled% NEQ 1 goto :ASK_FOR_REBOOT
@@ -119,10 +119,10 @@ pause
 goto :EOF
 
 :STOP_INSIDER
-echo Applying changes...
+echo 保存中，请稍候！
 call :RESET_INSIDER_CONFIG 1>NUL 2>NUL
 bcdedit /deletevalue {current} flightsigning >NUL 2>&1
-echo Done.
+echo 完成了！
 
 echo.
 IF %FlightSigningEnabled% NEQ 0 goto :ASK_FOR_REBOOT
